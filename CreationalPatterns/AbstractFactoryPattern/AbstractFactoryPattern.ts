@@ -1,34 +1,46 @@
 // Abstract classes for CPU and RAM
 abstract class CPU {
-  public abstract getSpecification(): void;
+  public abstract getSpecificationCPU(): void;
 }
 
 abstract class RAM {
-  public abstract getSpecification(): void;
+  public abstract getSpecificationRAM(): void;
 }
 
 // Concrete implementations of CPU
 class IntelCPU extends CPU {
-  public getSpecification(): void {
+  public getSpecificationCPU(): void {
     console.log('Intel CPU: 8 cores, 3.5 GHz');
   }
 }
 
 class AMDCPU extends CPU {
-  public getSpecification(): void {
+  public getSpecificationCPU(): void {
+    console.log('AMD CPU: 6 cores, 4.0 GHz');
+  }
+}
+
+class NvidiaCPU extends CPU {
+  public getSpecificationCPU(): void {
     console.log('AMD CPU: 6 cores, 4.0 GHz');
   }
 }
 
 // Concrete implementations of RAM
 class CorsairRAM extends RAM {
-  public getSpecification(): void {
+  public getSpecificationRAM(): void {
     console.log('Corsair RAM: 16 GB, DDR4, 3200 MHz');
   }
 }
 
 class KingstonRAM extends RAM {
-  public getSpecification(): void {
+  public getSpecificationRAM(): void {
+    console.log('Kingston RAM: 8 GB, DDR4, 2666 MHz');
+  }
+}
+
+class SamsungRAM extends RAM {
+  public getSpecificationRAM(): void {
     console.log('Kingston RAM: 8 GB, DDR4, 2666 MHz');
   }
 }
@@ -64,23 +76,29 @@ class LowEndComputerFactory implements ComputerComponentFactory {
 class Computer {
   private cpu: CPU;
   private ram: RAM;
+  private model: string;
 
-  constructor(factory: ComputerComponentFactory) {
+  constructor(model: string, factory: ComputerComponentFactory) {
     this.cpu = factory.createCPU();
     this.ram = factory.createRAM();
+    this.model = model;
   }
 
   public getSpecification(): void {
+    console.log('Thông số kỹ thuật của dòng máy: ', this.model);
     console.log('CPU Specification:');
-    this.cpu.getSpecification();
+    this.cpu.getSpecificationCPU();
     console.log('RAM Specification:');
-    this.ram.getSpecification();
+    this.ram.getSpecificationRAM();
   }
 }
 
 // Example usage
-const highEndComputer = new Computer(new HighEndComputerFactory());
+const highEndComputer = new Computer('Cao cấp', new HighEndComputerFactory());
 highEndComputer.getSpecification();
 
-const lowEndComputer = new Computer(new LowEndComputerFactory());
+const lowEndComputer = new Computer(
+  'Cấu hình thấp',
+  new LowEndComputerFactory()
+);
 lowEndComputer.getSpecification();
