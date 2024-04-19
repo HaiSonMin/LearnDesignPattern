@@ -1,36 +1,24 @@
-abstract class People {
-  abstract name: string;
-  abstract age: number;
-  abstract getSomeThing(abc: string): void;
-  protected commonCode = 1000;
+interface ITypeA {
+  typeA: number;
+  typeB: string;
+}
+interface ITypeB {
+  typeC: number;
+  typeD: string;
+}
 
-  constructor(private secretKey: number) {}
+interface ITypeC extends ITypeA, ITypeB {
+  typeE: number;
+  typeF: string;
+}
 
-  public getSecretKey(): number {
-    return this.secretKey;
-  }
-
-  public getSomeInfo(): void {
-    console.log('name::', this.name);
-    console.log('age::', this.age);
-  }
-
-  public getCommonCode(): void {
-    console.log('commonCode::', this.commonCode);
+class Abc<T extends Partial<ITypeC>> {
+  constructor() {}
+  public doSomeThing(work: T) {
+    return work;
   }
 }
 
-class VanA extends People {
-  name: string;
-  age: number;
-  getSomeThing(abc: string): void {
-    console.log('this.commonCode::', this.commonCode);
-  }
-  constructor(secretKey: number, name: string, age: number) {
-    super(secretKey);
-    this.name = name;
-    this.age = age;
-  }
-}
+const code = new Abc<ITypeA>();
+console.log(code.doSomeThing({ typeA: 132, typeB: '123123' }));
 
-const a = new VanA(12312123, 'Nguyen van A', 12);
